@@ -48,22 +48,30 @@ export default function AdminUsersPage() {
   }, []);
 
   const changeRole = (email: string) => {
-    setUsers(prev => {
-      const next = prev.map(u =>
-        u.email === email ? { ...u, role: (u.role === "admin" ? "user" : "admin") } : u
+    setUsers((prev) => {
+      const next: User[] = prev.map((u): User =>
+        u.email === email
+          ? { ...u, role: u.role === "admin" ? "user" : "admin" } // <- literal union
+          : u
       );
+
       saveUsers(next);
 
-      // ถ้าเป็น user ปัจจุบัน อัปเดต currentUser ด้วย
+      // อัปเดต currentUser ถ้าคนเดียวกัน
       if (current?.email === email) {
-        localStorage.setItem(CURRENT_KEY, JSON.stringify({
-          ...current, role: (current.role === "admin" ? "user" : "admin")
-        }));
+        const newRole: "user" | "admin" =
+          current.role === "admin" ? "user" : "admin";
+        localStorage.setItem(
+          CURRENT_KEY,
+          JSON.stringify({ ...current, role: newRole })
+        );
       }
-      return next;
+
+      return next; // <- ชัดเจนว่าเป็น User[]
     });
     alert("อัปเดต Role เรียบร้อย");
   };
+
 
   const removeUser = (email: string) => {
     if (!confirm("ต้องการลบผู้ใช้นี้หรือไม่?")) return;

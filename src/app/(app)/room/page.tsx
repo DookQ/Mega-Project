@@ -1,6 +1,6 @@
 // app/room/page.tsx
 "use client";
-
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -65,9 +65,11 @@ export default function RoomPage() {
       <div className="panel">
         <h3 className="text-lg font-semibold mb-3">ห้องประชุม A</h3>
         <div className="rounded-xl overflow-hidden mb-4 border border-slate-200 dark:border-slate-800">
-          <img
+          <Image
             src="https://www.truedigitalpark.com/public/uploads/meeting-room/m-67f29c5fdc598d38e65468ef1030b1af.png"
             alt="Room A"
+            width={1280}
+            height={720}
             className="w-full h-56 object-cover"
           />
         </div>
@@ -78,9 +80,11 @@ export default function RoomPage() {
       <div className="panel">
         <h3 className="text-lg font-semibold mb-3">ห้องประชุม B</h3>
         <div className="rounded-xl overflow-hidden mb-4 border border-slate-200 dark:border-slate-800">
-          <img
+          <Image
             src="https://www.truedigitalpark.com/public/uploads/meeting-room/m-67f29c5fdc598d38e65468ef1030b1af.png"
-            alt="Room B"
+            alt="Room A"
+            width={1280}
+            height={720}
             className="w-full h-56 object-cover"
           />
         </div>

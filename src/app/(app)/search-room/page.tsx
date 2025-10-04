@@ -1,6 +1,6 @@
 // app/search-room/page.tsx
 "use client";
-
+import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -35,7 +35,16 @@ export default function SearchRoomPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {filtered.map((room, i) => (
               <div key={i} className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow">
-                <img src={room.image} alt={room.name} className="w-full h-44 object-cover" />
+                <div className="relative w-full h-44">
+                  <Image
+                    src={room.image}
+                    alt={room.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
                 <div className="p-4 text-center">
                   <h3 className="font-semibold mb-3">{room.name}</h3>
                   <Link href="/room" className="inline-block rounded-md px-4 py-2 text-white brand-gradient hover:opacity-90">
