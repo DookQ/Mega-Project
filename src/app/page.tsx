@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import type { InputHTMLAttributes } from "react";
 
 /* ---------- Schemas ---------- */
 const loginSchema = z.object({
@@ -29,7 +30,7 @@ type RegisterForm = z.infer<typeof registerSchema>;
 
 type User = { name?: string; email: string; password: string; role?: "user" | "admin" };
 
-/* ---------- Small UI Helpers (หดขนาดแล้ว) ---------- */
+/* ---------- Small UI Helpers (ขนาดย่อ) ---------- */
 function LeftPanel({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="bg-blue-50 text-gray-800 border-b md:border-b-0 md:border-r border-gray-200
@@ -45,7 +46,7 @@ function LeftPanel({ title, subtitle }: { title: string; subtitle: string }) {
   );
 }
 
-function FieldInput(props: JSX.IntrinsicElements["input"]) {
+function FieldInput(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
@@ -58,14 +59,24 @@ function FieldInput(props: JSX.IntrinsicElements["input"]) {
   );
 }
 
-/* ---------- Main ---------- */
-export default function AuthPage() {
+/* ===================== Page (Single file) ===================== */
+/* ครอบเนื้อหาที่ใช้ useSearchParams ด้วย Suspense ภายในไฟล์เดียว */
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <AuthInner />
+    </Suspense>
+  );
+}
+
+/* เนื้อหาหลัก: ใช้ useSearchParams ได้อย่างปลอดภัยภายใต้ Suspense */
+function AuthInner() {
   const router = useRouter();
   const sp = useSearchParams();
   const view = (sp.get("view") ?? "login") as "login" | "register" | "forgot";
   const setView = (v: typeof view) => router.replace(`?view=${v}`, { scroll: false });
 
-  /* Login */
+  /* ---------- Login ---------- */
   const login = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
   const onLogin = (data: LoginForm) => {
     const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
@@ -78,7 +89,7 @@ export default function AuthPage() {
     router.push("/home");
   };
 
-  /* Register */
+  /* ---------- Register ---------- */
   const reg = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
   const onRegister = (data: RegisterForm) => {
     const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
@@ -90,7 +101,7 @@ export default function AuthPage() {
     router.push("/home");
   };
 
-  /* Forgot */
+  /* ---------- Forgot ---------- */
   const [emailForgot, setEmailForgot] = useState("");
   const onForgot = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -110,9 +121,8 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      {/* การ์ด: เล็กลงจาก 920px → 760px */}
+      {/* การ์ด: ขนาดย่อ */}
       <div className="w-full max-w-[760px] bg-white rounded-2xl shadow-xl overflow-hidden">
-        {/* grid เหมือนเดิม แต่ลด padding+min-height ในแต่ละคอลัมน์ */}
         <div className="grid grid-cols-1 md:grid-cols-2">
           <LeftPanel title={LEFT.title} subtitle={LEFT.subtitle} />
 
@@ -121,7 +131,7 @@ export default function AuthPage() {
               {RIGHT_TITLE}
             </h2>
 
-            {/* LOGIN */}
+            {/* ---------- LOGIN ---------- */}
             {view === "login" && (
               <form onSubmit={login.handleSubmit(onLogin)} className="space-y-4">
                 <FieldInput type="email" placeholder="อีเมล" {...login.register("email")} />
@@ -141,7 +151,6 @@ export default function AuthPage() {
                   <span />
                 </div>
 
-                {/* ปุ่มเล็กลง: h-10 */}
                 <button
                   type="submit"
                   className="w-full h-10 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition shadow-md hover:shadow-lg font-semibold tracking-wide"
@@ -149,7 +158,7 @@ export default function AuthPage() {
                   Login
                 </button>
 
-                {/* ปุ่มย่อยตรงกลาง เล็กลง */}
+                {/* ปุ่มย่อยเล็ก ตรงกลาง */}
                 <div className="flex items-center justify-center gap-2 pt-1">
                   <button
                     type="button"
@@ -169,7 +178,7 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* REGISTER */}
+            {/* ---------- REGISTER ---------- */}
             {view === "register" && (
               <form onSubmit={reg.handleSubmit(onRegister)} className="space-y-4">
                 <FieldInput placeholder="ชื่อผู้ใช้" {...reg.register("name")} />
@@ -210,7 +219,7 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* FORGOT */}
+            {/* ---------- FORGOT ---------- */}
             {view === "forgot" && (
               <form onSubmit={onForgot} className="space-y-4">
                 <FieldInput

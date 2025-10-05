@@ -24,8 +24,8 @@ export default function BookingClient() {
 
   const handleConfirm = () => {
     if (!date || !time) {
-      alert("กรุณาระบุวันและเวลาให้ครบ");
-      return;
+    alert("กรุณาระบุวันและเวลาให้ครบ");
+    return;
     }
 
     localdb.addBooking({
@@ -33,11 +33,10 @@ export default function BookingClient() {
       date,
       time,
       room,
-      status: "Pending",
     });
 
     alert("ยืนยันการจองเรียบร้อย ✅");
-    router.push("/admin/manage-booking"); // ไปดูรายการที่เพิ่งเพิ่ม
+    router.push("/admin/manage-booking");
   };
 
   return (
