@@ -1,9 +1,21 @@
+// src/app/(app)/room/page.tsx
 "use client";
+
+import { Suspense } from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RoomPage() {
+  // ✅ ครอบด้วย Suspense ภายในไฟล์เดียว (ไม่ต้องแยกไฟล์)
+  return (
+    <Suspense fallback={null}>
+      <RoomInner />
+    </Suspense>
+  );
+}
+
+function RoomInner() {
   const router = useRouter();
   const params = useSearchParams();
   const roomName = params.get("name");
@@ -17,7 +29,7 @@ export default function RoomPage() {
     { name: "ห้องประชุม B", image: "https://www.truedigitalpark.com/public/uploads/meeting-room/m-67f29c5fdc598d38e65468ef1030b1af.png" },
   ];
 
-  const room = rooms.find(r => r.name === roomName);
+  const room = rooms.find((r) => r.name === roomName);
 
   useEffect(() => {
     const s = localStorage.getItem("savedTime");
