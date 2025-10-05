@@ -1,66 +1,117 @@
+// src/app/(app)/profile/page.tsx
 "use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { User2, ShieldCheck, LayoutDashboard, Users, Boxes, ClipboardList } from "lucide-react";
 
-type Booking = { date: string|null; time: string|null; room: string|null };
+type CurrentUser = { name: string; email: string; role?: "user" | "admin" };
 
-export default function ProfilePage(){
-  const [user, setUser] = useState<{name:string; email:string} | null>(null);
-  const [bookings, setBookings] = useState<Booking[]>([]);
+export default function ProfilePage() {
+  const [user, setUser] = useState<CurrentUser | null>(null);
 
-  useEffect(()=> {
-    const cu = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (cu) setUser({ name: cu.name, email: cu.email });
-    const b: Booking[] = JSON.parse(localStorage.getItem("bookings") || "[]");
-    setBookings(b);
+  useEffect(() => {
+    try {
+      const cu = JSON.parse(localStorage.getItem("currentUser") || "null");
+      if (cu) setUser(cu);
+    } catch {}
   }, []);
 
-  const cancel = (i:number) => {
-    if (!confirm("ยืนยันยกเลิกการจองนี้?")) return;
-    const next = bookings.filter((_,idx)=>idx!==i);
-    setBookings(next);
-    localStorage.setItem("bookings", JSON.stringify(next));
-  };
+  const isAdmin = user?.role === "admin";
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-start justify-between gap-4">
-        <h1 className="title text-3xl">โปรไฟล์ของ {user?.name ?? "-"}</h1>
+    <div className="content-wrap space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="title text-3xl flex items-center gap-2">
+          <User2 size={24} /> โปรไฟล์ผู้ใช้
+        </h1>
         <Link href="/home" className="btn-brand">กลับหน้าหลัก</Link>
       </div>
 
-      {/* กล่องข้อมูลผู้ใช้ */}
-      <div className="panel max-w-md">
-        <p className="text-primary"><b>ชื่อ:</b> {user?.name ?? "-"}</p>
-        <p className="text-primary"><b>อีเมล:</b> {user?.email ?? "-"}</p>
+      {/* User Card */}
+      <div className="brand-card max-w-2xl">
+        <div className="flex items-start gap-4">
+          <div className="rounded-xl p-2 bg-white border border-[var(--border)]">
+            <User2 size={22} />
+          </div>
+          <div className="space-y-1">
+            <div className="text-lg font-semibold text-primary">{user?.name ?? "-"}</div>
+            <div className="text-muted text-sm">{user?.email ?? "-"}</div>
+            <div className="text-sm">
+              สถานะ: <span className="font-semibold">{user?.role ?? "user"}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <h2 className="title text-2xl">การจองของฉัน</h2>
+      {/* Admin Shortcut (แสดงเฉพาะ admin) */}
+      {isAdmin && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-primary">
+            <ShieldCheck size={18} />
+            <span className="font-semibold">สำหรับผู้ดูแลระบบ</span>
+          </div>
 
-      {bookings.length === 0 ? (
-        <div className="panel max-w-md text-muted">ยังไม่มีการจอง</div>
-      ) : (
-        <div className="grid gap-4 max-w-3xl">
-          {bookings.map((b, i)=>(
-            <div key={i} className="panel">
-              <div className="flex items-start justify-between gap-6">
-                <div className="space-y-1">
-                  <div className="font-semibold text-primary">{b.room ?? "ไม่ระบุห้อง"}</div>
-                  <div className="text-sm text-muted">
-                    วันที่: <b className="text-strong">{b.date ?? "-"}</b> · เวลา: <b className="text-strong">{b.time ?? "-"}</b>
-                  </div>
+          {/* แผงลัดเข้า Admin */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Admin Dashboard */}
+            <Link href="admin/dashboard" className="brand-card hover:scale-[1.02] transition-transform">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl p-2 bg-white border border-[var(--border)]">
+                  <LayoutDashboard size={20} />
                 </div>
-                <div className="flex gap-2">
-                  <button onClick={()=>cancel(i)} className="btn-brand">ยกเลิก</button>
-                  <Link href="/room" className="rounded-md px-4 py-2 border border-slate-300 dark:border-slate-700">
-                    จองเพิ่ม
-                  </Link>
+                <div>
+                  <div className="font-semibold">แอดมิน แดชบอร์ด</div>
+                  <div className="text-muted text-sm">ภาพรวมสถิติ</div>
                 </div>
               </div>
-            </div>
-          ))}
+            </Link>
+
+            {/* จัดการผู้ใช้ */}
+            <Link href="admin/manage-user" className="brand-card hover:scale-[1.02] transition-transform">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl p-2 bg-white border border-[var(--border)]">
+                  <Users size={20} />
+                </div>
+                <div>
+                  <div className="font-semibold">จัดการผู้ใช้</div>
+                  <div className="text-muted text-sm">เปลี่ยนสิทธิ์/ลบผู้ใช้</div>
+                </div>
+              </div>
+            </Link>
+
+            {/* จัดการห้อง
+            <Link href="admin/rooms" className="brand-card hover:scale-[1.02] transition-transform">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl p-2 bg-white border border-[var(--border)]">
+                  <Boxes size={20} />
+                </div>
+                <div>
+                  <div className="font-semibold">จัดการห้อง</div>
+                  <div className="text-muted text-sm">เพิ่ม/แก้ไข/ลบห้อง</div>
+                </div>
+              </div>
+            </Link> */}
+
+            {/* จัดการการจอง */}
+            <Link href="admin/manage-booking" className="brand-card hover:scale-[1.02] transition-transform">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl p-2 bg-white border border-[var(--border)]">
+                  <ClipboardList size={20} />
+                </div>
+                <div>
+                  <div className="font-semibold">จัดการการจอง</div>
+                  <div className="text-muted text-sm">ค้นหา/แก้ไข/ยกเลิก</div>
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
+      )}
+
+      {!isAdmin && (
+        <div className="text-muted">ต้องการสิทธิ์ผู้ดูแลระบบเพื่อเข้าหน้า Admin</div>
       )}
     </div>
   );

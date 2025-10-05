@@ -1,173 +1,138 @@
 @import "tailwindcss";
 
-/* === Brand Utilities (light/dark) === */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Light (ฟ้า–ขาว) ===== */
+/* ===== Light (Blue-800 & Softer Whites) ===== */
 :root{
-  --brand-from:#38bdf8; --brand-via:#22d3ee; --brand-to:#0ea5e9;
-  --surface:#ffffff; --text:#0f172a; --muted:#64748b;
-}
-.dark:root{
-  --brand-from:#0ea5e9; --brand-via:#06b6d4; --brand-to:#0284c7;
-  --surface:#0b1220; --text:#e2e8f0; --muted:#94a3b8;
-}
-
-.brand-gradient{ background-image: linear-gradient(to right,var(--brand-from),var(--brand-via),var(--brand-to)); }
-.brand-page{ min-height:100svh; background-image: linear-gradient(to bottom,#f0f9ff,#ecfeff,#dbeafe); }
-.dark .brand-page{ background-image:none; background-color:#0b1220; }
-.brand-card{ width:20rem; border-radius:1rem; padding:1.25rem; background:var(--surface); color:var(--text); box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1) }
-.brand-subtle{ color:var(--muted); }
-
-/* Layout helpers */
-.content-wrap{ max-width: 1100px; margin-left:auto; margin-right:auto; width:100%; }
-
-/* Sidebar active & hover */
-.brand-sidelink{ display:block; border-radius:.5rem; padding:.5rem .75rem; color:#cbd5e1; }
-.brand-sidelink:hover{ background:rgba(255,255,255,.08); color:#fff; }
-.brand-sidelink[aria-current="page"]{
-  background:linear-gradient(90deg,var(--brand-from),var(--brand-to));
-  color:#fff; box-shadow:0 6px 16px rgba(14,165,233,.25);
+  /* ใช้ blue-800 เป็นสีหลัก */
+  --brand-from:#1e40af;   /* blue-800 */
+  --brand-to:#1e40af;     /* ให้กราเดียนต์ดูเป็นสีเดียว (solid blue-800) */
+  /* ขาวนุ่ม ไม่แสบตา */
+  --bg:#f8fafc;           /* พื้นหลังเพจ (slate-50 โทนอุ่นนิด ๆ) */
+  --bg-soft:#ffffff;      /* พื้นการ์ด/พาเนล */
+  --border:#e5e7eb;       /* ขอบอ่อน */
+  --text:#0b1220;         /* ตัวอักษรหลักเข้มขึ้นเล็กน้อย อ่านง่าย */
+  --muted:#475569;        /* ตัวอักษรรอง */
 }
 
-/* Card on dark bg: à¹€à¸žà¸´à¹ˆà¸¡à¸„à¸­à¸™à¸—à¸£à¸²à¸ªà¸•à¹Œà¸™à¸´à¸”à¸™à¸¶à¸‡ */
-.brand-card{ width:20rem; border-radius:1rem; padding:1.25rem;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-  backdrop-filter:saturate(140%) blur(2px);
-  border:1px solid rgba(255,255,255,.08);
-  color:var(--text);
-  box-shadow:0 8px 24px -12px rgba(0,0,0,.6);
-}
-.dark .brand-card{ color:#e2e8f0; }
-
-/* à¸›à¸¸à¹ˆà¸¡ gradient à¹ƒà¸«à¹‰à¹€à¸”à¹‰à¸‡à¸‚à¸¶à¹‰à¸™ */
-.btn-brand{ border-radius:.75rem; padding:.5rem 1rem; color:#fff;
-  background-image: linear-gradient(to right,var(--brand-from),var(--brand-to));
-  box-shadow: 0 10px 20px -10px rgba(14,165,233,.8);
-}
-.btn-brand:hover{ filter:saturate(110%); opacity:.95; }
-
-/* ---------- Text utilities ---------- */
-.text-strong        { color:#0f172a; }                /* slate-900 */
-.dark .text-strong  { color:#e2e8f0; }                /* slate-200 */
-
-.text-primary       { color:#1f2937; }                /* slate-800 */
-.dark .text-primary { color:#e5e7eb; }                /* zinc-200 */
-
-.text-muted         { color:#64748b; }                /* slate-500 */
-.dark .text-muted   { color:#cbd5e1; }                /* slate-300 */
-
-.title              { color:#0ea5e9; font-weight:700; } /* sky-600 */
-.dark .title        { color:#38bdf8; }                  /* sky-400 */
-
-/* Inputs (à¹ƒà¸«à¹‰à¸•à¸±à¸§à¸­à¸±à¸à¸©à¸£/placeholder à¸Šà¸±à¸”à¸‚à¸¶à¹‰à¸™) */
-.input{ color:#0f172a; }
-.dark .input{ color:#e2e8f0; }
-.input::placeholder{ color:#94a3b8; opacity:.95; }
-.dark .input::placeholder{ color:#cbd5e1; opacity:.85; }
-
-/* à¸›à¸¸à¹ˆà¸¡ gradient à¹ƒà¸«à¹‰à¸•à¸±à¸§à¸­à¸±à¸à¸©à¸£à¸‚à¸²à¸§à¹à¸™à¹ˆà¸™ à¹† */
-.btn-brand{ color:#fff !important; text-shadow:0 1px 0 rgba(0,0,0,.25); }
-
-/* à¸à¸²à¸£à¹Œà¸”/à¸žà¸²à¹€à¸™à¸¥à¸”à¹‰à¸²à¸™à¹ƒà¸™à¹ƒà¸«à¹‰à¹ƒà¸Šà¹‰à¸ªà¸µà¸•à¸±à¸§à¸­à¸±à¸à¸©à¸£à¸¡à¸²à¸•à¸£à¸à¸²à¸™ */
-/* ทำให้ panel อ่านง่ายทั้ง light/dark */
-/* === Unify panel to match brand-card across the app === */
-.panel, .brand-card{
-  border-radius: 1rem;
-  padding: 1.25rem;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid rgba(148,163,184,.15);
-  box-shadow: 0 10px 20px -12px rgba(0,0,0,.18);
+/* พื้นหลังเพจ: ลดความสว่างของไฮไลต์ให้บางลง + ใช้เฉด blue-800 */
+.brand-page{
+  min-height:100svh;
+  background:
+    radial-gradient(900px 400px at 90% -10%, rgba(30,64,175,.08), transparent),
+    radial-gradient(1000px 500px at 10% -5%, rgba(30,64,175,.06), transparent),
+    var(--bg);
 }
 
-/* โหมดมืดให้โทนเดียวกัน */
-.dark .panel, .dark .brand-card{
-  background:#0f172a;            /* เทาเข้มอ่านง่าย (เหมือนหน้าอื่น) */
-  border-color:#1f2937;
+/* แถบหัว/ปุ่มหลัก: กราเดียนต์เป็นโทน blue-800 (ดูแทบเป็นสีทึบ) */
+.brand-gradient{
+  background-image: linear-gradient(to right, var(--brand-from), var(--brand-to));
 }
 
-/* ===== Stat Card (เข้าชุด brand-card/panel) ===== */
+/* การ์ด/พาเนล: โทนขาวนุ่ม + เงาบางลง */
+.brand-card,
+.panel,
+.table-card,
 .stat-card{
   border-radius: 1rem;
   padding: 1rem 1.25rem;
-  background: var(--surface);
+  background: var(--bg-soft);
   color: var(--text);
-  border: 1px solid rgba(148,163,184,.15);
-  box-shadow: 0 10px 20px -12px rgba(0,0,0,.18);
-}
-.dark .stat-card{
-  background:#0f172a;        /* เข้มแต่ไม่ทึบเทา */
-  border-color:#1f2937;
-}
-.stat-head{
-  display:flex; align-items:center; gap:.5rem;
-  font-size:.95rem; letter-spacing:.2px;
-  color: var(--muted);
-}
-.stat-value{
-  margin-top:.5rem;
-  font-size:2rem; line-height:1.1; font-weight:700;
-  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 20px -14px rgba(30, 64, 175, .12);
 }
 
-/* ===== Admin Table Card ===== */
-.table-card{
-  border-radius: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid rgba(148,163,184,.15);
-  box-shadow: 0 10px 20px -12px rgba(0,0,0,.18);
+/* ลิงก์เมนูซ้าย: hover/active ใช้ blue-800 */
+.brand-sidelink{
+  display:block; border-radius:.5rem; padding:.5rem .75rem;
+  color:#334155;
 }
-.dark .table-card{
-  background:#0f172a;          /* เข้มแต่ไม่หม่น */
-  border-color:#1f2937;
+.brand-sidelink:hover{ background:rgba(30,64,175,.08); }
+.brand-sidelink[aria-current="page"]{
+  background:linear-gradient(90deg, var(--brand-from), var(--brand-to)); /* = blue-800 */
+  color:#fff; box-shadow:0 6px 16px rgba(30,64,175,.25);
 }
 
-/* ===== Table base ===== */
-.table{
-  width: 100%;
-  border-collapse: collapse;
-}
-.table th, .table td{
-  padding: .9rem 1rem;
-  border-bottom: 1px solid rgba(148,163,184,.25);
-  text-align: left;
-  vertical-align: middle;
-}
-.table th{
-  font-weight: 700;
-  color: var(--muted);
-}
-.dark .table th{
-  color:#9fb3c8;
-}
-.table tr:hover td{
-  background: rgba(2,132,199,.06);
-}
-.dark .table tr:hover td{
-  background: rgba(148,163,184,.08);
-}
+/* ตัวอักษร */
+.title{ color:#1e40af; font-weight:800; } /* ใช้ blue-800 */
+.text-primary{ color:#0f172a; }
+.text-strong{ color:var(--text); }
+.text-muted{ color:var(--muted); }
 
-/* ===== Role badge ===== */
+/* อินพุต: คงขาวนุ่ม + โฟกัสไม่แสบตา (ตัดกรอบฟ้าแรง ๆ ออกแล้ว) */
+.input{
+  width:100%; border-radius:.75rem; padding:.75rem .9rem;
+  background:#fff; color:var(--text);
+  border:1px solid var(--border); outline:0; transition:border-color .15s ease;
+}
+.input::placeholder{ color:#94a3b8; }
+.input:focus{ border-color:#cbd5e1; box-shadow:none; outline:none; }
+
+/* ปุ่มหลักของแอป: เปลี่ยนเป็น blue-800 */
+.btn-brand{
+  border-radius:.75rem; padding:.6rem 1rem;
+  color:#fff; font-weight:700; text-align:center;
+  background-image:linear-gradient(to right, var(--brand-from), var(--brand-to)); /* = blue-800 */
+  box-shadow:0 10px 20px -12px rgba(30,64,175,.18);
+}
+.btn-brand:hover{ filter:saturate(104%); opacity:.97; }
+
+/* ตาราง: โฮเวอร์อ่อน ๆ ด้วย blue-800 */
+.table tr:hover td{ background:rgba(30,64,175,.06); }
+
+/* badge: เปลี่ยนชุดสีให้อ่านง่ายกับธีมใหม่ */
 .badge{
-  display:inline-flex; align-items:center; gap:.4rem;
-  padding:.25rem .6rem; border-radius:999px;
+  display:inline-flex; align-items:center; padding:.25rem .6rem; border-radius:999px;
   font-size:.8rem; font-weight:600;
-  background: rgba(2,132,199,.10);
-  color:#0369a1;
+  background:#e0e7ff; color:#1e3a8a; border:1px solid #c7d2fe; /* indigo-ish อ่อนใกล้ blue-800 */
 }
-.dark .badge{
-  background: rgba(148,163,184,.15);
-  color:#e2e8f0;
+.link-accent{ color:#1e40af; font-weight:600; } .link-accent:hover{text-decoration:underline;}
+.link-danger{ color:#b91c1c; font-weight:600; } .link-danger:hover{text-decoration:underline;}
+
+
+/* ===== Auth (ฟ้า–ขาว, หน้าเดี่ยว) ===== */
+/* ===== ปุ่มหลักของแอป (คงเดิม) ===== */
+.btn-brand{
+  border-radius:.75rem; padding:.6rem 1rem;
+  color:#fff; font-weight:700; text-align:center;
+  background-image:linear-gradient(to right, var(--brand-from), var(--brand-to));
+  box-shadow:0 10px 20px -12px rgba(14,165,233,.18);
+}
+.btn-brand:hover{ filter:saturate(105%); opacity:.96; }
+
+/* ===== อินพุต (ตัดกรอบ/เงาฟ้าออก) ===== */
+.input{
+  width:100%; border-radius:.75rem; padding:.75rem .9rem;
+  background:#fff; color:var(--text);
+  border:1px solid var(--border); outline:0; transition:border-color .15s ease;
+}
+.input::placeholder{ color:#94a3b8; }
+/* ยกเลิกแสง/กรอบฟ้า */
+.input:focus{
+  border-color:#cbd5e1;     /* เส้นเทาอ่อน ๆ พอ */
+  box-shadow:none; 
+  outline:none;
 }
 
-/* ===== Action links ===== */
-.link-accent{ color:#d97706; font-weight:600; }
-.link-accent:hover{ text-decoration: underline; }
-.link-danger{ color:#ef4444; font-weight:600; }
-.link-danger:hover{ text-decoration: underline; }
+/* ===== ชุด Auth ให้เหมือนกันทุกหน้า ===== */
+.auth-wrap{ /* เดิมคงไว้ได้ */ }
+.auth-card{ /* เดิมคงไว้ได้ */ }
+.auth-title{ /* เดิมคงไว้ได้ */ }
 
-/* ===== Responsive wrap ===== */
-.table-wrap{
-  overflow:auto; /* ทำให้เลื่อนในแนวนอนได้บนจอเล็ก */
-  border-radius: .75rem;
+.auth-input{
+  border-radius:.75rem;
+  border:1px solid var(--border);
+  padding:.75rem .9rem;
+  background:#fff; color:var(--text);
+  outline:0; width:100%;
+}
+.auth-input::placeholder{ color:#94a3b8; }
+/* ยกเลิกแสง/กรอบฟ้าใน auth ด้วย */
+.auth-input:focus{
+  border-color:#cbd5e1;
+  box-shadow:none;
+  outline:none;
 }
