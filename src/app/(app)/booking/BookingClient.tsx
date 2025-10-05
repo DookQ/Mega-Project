@@ -3,6 +3,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { localdb } from "@/lib/localdb"; // ✅ ใช้ localdb เหมือนหน้า manage-booking
 
 export default function BookingClient() {
   const searchParams = useSearchParams();
@@ -10,9 +11,9 @@ export default function BookingClient() {
 
   const [userName, setUserName] = useState<string>("ผู้ใช้งานทั่วไป");
 
-  const date = searchParams.get("date");
-  const time = searchParams.get("time");
-  const room = searchParams.get("room");
+  const date = searchParams.get("date") || "";
+  const time = searchParams.get("time") || "";
+  const room = searchParams.get("room") || "-";
 
   useEffect(() => {
     try {
@@ -22,12 +23,21 @@ export default function BookingClient() {
   }, []);
 
   const handleConfirm = () => {
-    const newBooking = { date, time, room, user: userName };
-    const saved = JSON.parse(localStorage.getItem("bookings") || "[]");
-    saved.push(newBooking);
-    localStorage.setItem("bookings", JSON.stringify(saved));
+    if (!date || !time) {
+      alert("กรุณาระบุวันและเวลาให้ครบ");
+      return;
+    }
+
+    localdb.addBooking({
+      name: userName,
+      date,
+      time,
+      room,
+      status: "Pending",
+    });
+
     alert("ยืนยันการจองเรียบร้อย ✅");
-    router.push("/my-booking");
+    router.push("/admin/manage-booking"); // ไปดูรายการที่เพิ่งเพิ่ม
   };
 
   return (
@@ -37,7 +47,7 @@ export default function BookingClient() {
       <div className="brand-card w-full max-w-lg">
         <div className="space-y-3 text-base">
           <p><strong className="text-[var(--brand-to)]">ผู้จอง:</strong> {userName}</p>
-          <p><strong className="text-[var(--brand-to)]">ห้องที่จอง:</strong> {room || "ไม่ระบุ"}</p>
+          <p><strong className="text-[var(--brand-to)]">ห้องที่จอง:</strong> {room}</p>
           <p><strong className="text-[var(--brand-to)]">วันที่:</strong> {date || "ไม่ระบุ"}</p>
           <p><strong className="text-[var(--brand-to)]">เวลา:</strong> {time || "ไม่ระบุ"}</p>
         </div>
@@ -45,13 +55,13 @@ export default function BookingClient() {
         <div className="mt-6 flex gap-3">
           <button
             onClick={handleConfirm}
-            className="rounded-lg px-5 py-2 text-white brand-gradient shadow hover:opacity-90"
+            className="rounded-lg px-5 py-2 text-white btn-brand"
           >
             ยืนยันการจอง
           </button>
           <button
             onClick={() => router.back()}
-            className="rounded-lg px-5 py-2 border border-slate-300/60 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
+            className="rounded-lg px-5 py-2 border border-slate-300/60 hover:bg-slate-50"
           >
             ย้อนกลับ
           </button>

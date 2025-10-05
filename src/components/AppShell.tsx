@@ -25,7 +25,7 @@ export default function AppShell({
   ] as NavItem[],
 }: { children: React.ReactNode; title?: string; nav?: NavItem[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [userName, setUserName] = useState("ผู้ใช้งานทั่วไป");
+  const [userName, setUserName] = useState("โปรไฟล์ผู้ใช้");
   const pathname = usePathname();
 
 useEffect(() => {

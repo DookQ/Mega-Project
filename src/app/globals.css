@@ -136,3 +136,17 @@
   box-shadow:none;
   outline:none;
 }
+
+/* --- Compact table utilities --- */
+.table.compact th,
+.table.compact td { padding: .5rem .75rem; font-size: .95rem; }
+
+.table.compact thead th {
+  font-weight: 700;
+  white-space: nowrap;               /* หัวคอลัมน์ไม่ตัดบรรทัด */
+}
+
+.table.compact td .badge {           /* ปรับ badge ให้เล็กลงนิด */
+  padding: .2rem .5rem; font-size: .78rem;
+  border-radius: 999px;
+}

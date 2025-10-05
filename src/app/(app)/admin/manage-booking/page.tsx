@@ -115,35 +115,36 @@ export default function ManageBookingPage() {
       </div>
 
       {/* Table */}
-      <div className="table-card">
-        <div className="table-wrap">
-          <table className="table">
+      {/* Table */}
+      <div className="table-card card-tight">
+        <div className="table-wrap overflow-x-auto">
+          <table className="table compact min-w-[880px]">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>ชื่อลูกค้า</th>
-                <th>ห้อง</th>
-                <th>วันที่</th>
-                <th>เวลา</th>
-                <th>สถานะ</th>
-                <th>การจัดการ</th>
+                <th className="w-14">ID</th>
+                <th className="w-[180px]">ชื่อลูกค้า</th>
+                <th className="w-[160px]">ห้อง</th>
+                <th className="w-[120px]">วันที่</th>
+                <th className="w-[100px]">เวลา</th>
+                <th className="w-[110px]">สถานะ</th>
+                <th className="w-[160px]">การจัดการ</th>
               </tr>
             </thead>
-<tbody>
-  {filtered.map((b, i) => (
-    <tr key={`${b.id ?? "noid"}-${b.date ?? "nodate"}-${b.time ?? "notime"}-${i}`}>
-      <td>{b.id}</td>
-      <td className="text-primary">{b.name}</td>
-      <td>{b.room ?? "-"}</td>
-      <td>{b.date}</td>
-      <td>{b.time}</td>
-      <td>
-        <span className={`badge ${b.status === "Cancelled" ? "!bg-red-100 !text-red-700 !border-red-300" : ""}`}>
-          {b.status}
-        </span>
-      </td>
-      <td>
-                    <div className="flex items-center gap-4">
+            <tbody>
+              {filtered.map((b, i) => (
+                <tr key={`${b.id ?? "noid"}-${b.date ?? "nodate"}-${b.time ?? "notime"}-${i}`}>
+                  <td>{b.id}</td>
+                  <td className="text-primary">{b.name}</td>
+                  <td>{b.room ?? "-"}</td>
+                  <td className="whitespace-nowrap">{b.date}</td>
+                  <td className="whitespace-nowrap">{b.time}</td>
+                  <td>
+                    <span className={`badge ${b.status === "Cancelled" ? "!bg-red-100 !text-red-700 !border-red-300" : ""}`}>
+                      {b.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="flex items-center gap-3">
                       <button className="link-accent" onClick={() => editBooking(b.id)}>แก้ไข</button>
                       {b.status !== "Cancelled" ? (
                         <button className="link-danger" onClick={() => cancelBooking(b.id)}>ยกเลิก</button>
@@ -155,12 +156,15 @@ export default function ManageBookingPage() {
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={7} className="text-center text-muted py-6">ยังไม่มีรายการ</td></tr>
+                <tr>
+                  <td colSpan={7} className="text-center text-muted py-6">ยังไม่มีรายการ</td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
       </div>
+
     </div>
   );
 }

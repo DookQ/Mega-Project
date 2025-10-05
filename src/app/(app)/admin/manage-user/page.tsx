@@ -89,58 +89,55 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className="content-wrap space-y-6">
-      <h1 className="title text-3xl">จัดการผู้ใช้</h1>
-
-      <div className="table-card">
-        <div className="table-wrap">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ชื่อ</th>
-                <th>อีเมล</th>
-                <th>Role</th>
-                <th>วันที่สมัคร</th>
-                <th>การจัดการ</th>
+    <div className="table-card card-tight">
+      <div className="table-wrap overflow-x-auto">
+        <table className="table compact min-w-[720px]">
+          <thead>
+            <tr>
+              <th className="w-[140px]">ชื่อ</th>
+              <th className="w-[220px]">อีเมล</th>
+              <th className="w-[110px]">Role</th>
+              <th className="w-[140px]">วันที่สมัคร</th>
+              <th className="w-[160px]">การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.email}>
+                <td className="text-primary">{u.name || "-"}</td>
+                <td className="text-primary">{u.email}</td>
+                <td>
+                  <span className="badge">{u.role ?? "user"}</span>
+                </td>
+                <td className="text-muted whitespace-nowrap">{u.createdAt ?? "-"}</td>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <button
+                      className="link-accent"
+                      onClick={() => changeRole(u.email)}
+                      title="สลับระหว่าง admin / user"
+                    >
+                      เปลี่ยน Role
+                    </button>
+                    <button
+                      className="link-danger"
+                      onClick={() => removeUser(u.email)}
+                    >
+                      ลบ
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.email}>
-                  <td className="text-primary">{u.name || "-"}</td>
-                  <td className="text-primary">{u.email}</td>
-                  <td>
-                    <span className="badge">{u.role ?? "user"}</span>
-                  </td>
-                  <td className="text-muted">{u.createdAt ?? "-"}</td>
-                  <td>
-                    <div className="flex items-center gap-4">
-                      <button
-                        className="link-accent"
-                        onClick={() => changeRole(u.email)}
-                        title="สลับระหว่าง admin / user"
-                      >
-                        เปลี่ยน Role
-                      </button>
-                      <button
-                        className="link-danger"
-                        onClick={() => removeUser(u.email)}
-                      >
-                        ลบ
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="text-muted py-6">ยังไม่มีผู้ใช้</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            ))}
+            {users.length === 0 && (
+              <tr>
+                <td colSpan={5} className="text-muted py-6">ยังไม่มีผู้ใช้</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
+
   );
 }

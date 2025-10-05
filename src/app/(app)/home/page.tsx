@@ -24,12 +24,6 @@ export default function Page() {
 
   return (
     <div className="space-y-6 content-wrap">
-      {/* หัวเรื่อง */}
-      {/* <div className="brand-gradient rounded-md px-4 py-3 text-[#0b1220] text-xl font-semibold">
-        Library
-      </div> */}
-
-      {/* การ์ดลิงก์: จัดเรียงเป็นกริด */}
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 justify-items-center">
         {cards.map(({ href, title, subtitle, icon: Icon }) => (
           <Link key={href} href={href} className="w-full max-w-[22rem]">
